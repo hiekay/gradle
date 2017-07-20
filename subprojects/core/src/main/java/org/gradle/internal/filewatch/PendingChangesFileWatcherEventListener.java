@@ -16,18 +16,25 @@
 
 package org.gradle.internal.filewatch;
 
-import org.gradle.internal.Factory;
+import org.gradle.internal.logging.text.StyledTextOutput;
 
-public class FileWatcherEventListenerFactory implements Factory<FileWatcherEventListener> {
+public class PendingChangesFileWatcherEventListener implements FileWatcherEventListener {
     private final PendingChangesListener listener;
+    private final FileWatcherEventListener delegate;
 
-    public FileWatcherEventListenerFactory(PendingChangesListener listener) {
+    public PendingChangesFileWatcherEventListener(PendingChangesListener listener, FileWatcherEventListener delegate) {
         this.listener = listener;
+        this.delegate = delegate;
     }
 
     @Override
-    public FileWatcherEventListener create() {
-        return new PendingChangesFileWatcherEventListener(listener,
-            new DefaultFileWatcherEventListener());
+    public void onChange(FileWatcherEvent event) {
+        listener.expectPendingChanges();
+        delegate.onChange(event);
+    }
+
+    @Override
+    public void reportChanges(StyledTextOutput logger) {
+        delegate.reportChanges(logger);
     }
 }

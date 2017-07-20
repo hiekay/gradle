@@ -21,10 +21,12 @@ import org.gradle.initialization.GradleLauncherFactory;
 import org.gradle.internal.classpath.CachedClasspathTransformer;
 import org.gradle.internal.concurrent.ExecutorFactory;
 import org.gradle.internal.concurrent.ParallelismConfigurationManager;
+import org.gradle.internal.event.ListenerManager;
 import org.gradle.internal.filewatch.DefaultFileSystemChangeWaiterFactory;
 import org.gradle.internal.filewatch.FileSystemChangeWaiterFactory;
 import org.gradle.internal.filewatch.FileWatcherEventListenerFactory;
 import org.gradle.internal.filewatch.FileWatcherFactory;
+import org.gradle.internal.filewatch.PendingChangesListener;
 import org.gradle.internal.invocation.BuildActionRunner;
 import org.gradle.internal.logging.LoggingManagerInternal;
 import org.gradle.internal.logging.text.StyledTextOutputFactory;
@@ -99,8 +101,8 @@ public class LauncherServices extends AbstractPluginServiceRegistry {
                 parallelismConfigurationManager);
         }
 
-        FileWatcherEventListenerFactory createFileWatcherEventListenerFactory() {
-            return new FileWatcherEventListenerFactory();
+        FileWatcherEventListenerFactory createFileWatcherEventListenerFactory(ListenerManager listenerManager) {
+            return new FileWatcherEventListenerFactory(listenerManager.getBroadcaster(PendingChangesListener.class));
         }
 
         FileSystemChangeWaiterFactory createFileSystemChangeWaiterFactory(FileWatcherFactory fileWatcherFactory) {

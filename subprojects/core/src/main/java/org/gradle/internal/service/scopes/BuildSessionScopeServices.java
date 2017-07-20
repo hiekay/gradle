@@ -112,8 +112,8 @@ public class BuildSessionScopeServices extends DefaultServiceRegistry {
         addProvider(new ScopeIdsServices());
     }
 
-    DeploymentRegistry createDeploymentRegistry() {
-        return new DefaultDeploymentRegistry();
+    DeploymentRegistry createDeploymentRegistry(ListenerManager listenerManager) {
+        return new DefaultDeploymentRegistry(listenerManager);
     }
 
     ListenerManager createListenerManager(ListenerManager parent) {

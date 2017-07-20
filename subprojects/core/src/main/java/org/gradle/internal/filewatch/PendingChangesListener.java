@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-package org.gradle.deployment.internal;
+package org.gradle.internal.filewatch;
 
-import org.gradle.api.invocation.Gradle;
-import org.gradle.internal.concurrent.Stoppable;
-
-public interface DeploymentHandle extends Stoppable {
-    boolean isRunning();
-    void onNewBuild(Gradle gradle);
-    void onPendingChanges();
+public interface PendingChangesListener {
+    void expectPendingChanges();
 }
